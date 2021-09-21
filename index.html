@@ -100,7 +100,14 @@
             d3.json(input, function (graph) {
                 document.getElementById("content").innerHTML = "";
                 const nodes = graph.nodes;
-                const links = graph.links;
+                let links = [];
+                // sanitize links
+                graph.links.forEach((l, index) => {
+                    if (l.source !== l.target) {
+                        links.push(l);
+                    }
+                });
+
 
                 // preprocess
                 let node_indices = {};
@@ -186,7 +193,7 @@
                     .attr('transform', `translate(${width / 2},${height / 2})`);
 
                 let link = mainGroup.selectAll('line')
-                    .data(graph.links)
+                    .data(links)
                     .enter().append('line');
 
                 link
@@ -273,33 +280,44 @@
                 var k = Math.sqrt(nodes.length / (width * height));
 
                 simulation.force('link')
-                    .links(graph.links);
+                    .links(links);
 
                 function ticked() {
                     link
                         .attr('x1', d => {
                             let l = Math.sqrt((d.target.x - d.source.x) * (d.target.x - d.source.x) + (d.target.y - d.source.y) * (d.target.y - d.source.y));
+
+
                             let ux = (d.target.x - d.source.x) / l;
                             let uy = (d.target.y - d.source.y) / l;
-                            return d.source.x + ux * nodes[node_indices[d.source.id]].r;
+
+
+                            var r = nodes[node_indices[d.source.id]].r;
+                            return d.source.x + ux * r;
                         })
                         .attr('y1', d => {
                             let l = Math.sqrt((d.target.x - d.source.x) * (d.target.x - d.source.x) + (d.target.y - d.source.y) * (d.target.y - d.source.y));
+
                             let ux = (d.target.x - d.source.x) / l;
                             let uy = (d.target.y - d.source.y) / l;
-                            return d.source.y + uy * nodes[node_indices[d.source.id]].r;
+
+                            var r = nodes[node_indices[d.source.id]].r;
+                            return d.source.y + uy * r;
                         })
                         .attr('x2', d => {
                             let l = Math.sqrt((d.target.x - d.source.x) * (d.target.x - d.source.x) + (d.target.y - d.source.y) * (d.target.y - d.source.y));
+
                             let ux = (d.target.x - d.source.x) / l;
                             let uy = (d.target.y - d.source.y) / l;
                             return d.target.x - ux * nodes[node_indices[d.target.id]].r;
                         })
                         .attr('y2', d => {
                             let l = Math.sqrt((d.target.x - d.source.x) * (d.target.x - d.source.x) + (d.target.y - d.source.y) * (d.target.y - d.source.y));
+
                             let ux = (d.target.x - d.source.x) / l;
                             let uy = (d.target.y - d.source.y) / l;
-                            return d.target.y - uy * nodes[node_indices[d.target.id]].r;
+                            var r = nodes[node_indices[d.target.id]].r;
+                            return d.target.y - uy * r;
                         });
 
                     circles
