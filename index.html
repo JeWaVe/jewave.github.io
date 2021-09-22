@@ -120,7 +120,7 @@
         const width = window.innerWidth;
         const height = window.innerHeight;
         function get_job(node) {
-            return node.job.concat(node.offices).concat(node.rank).join(',') || "inconnu";
+            return node.job.concat(node.offices.concat(node.rank)).join(',') || "pas de rang";
         }
 
         function sanitize(graph) {
@@ -167,8 +167,8 @@
             <label for="witnesses">Témoins</label>
         </div>
         <div>
-            <input class="radio" type="radio" id="chord" name="choices" value="chord" />
-            <label for="chord">Graphe complet</label>
+            <input class="radio" type="radio" id="chords" name="choices" value="chords" />
+            <label for="chords">Graphe complet</label>
         </div>
     </form>
     <div id="content" width="100%" height="100%">
@@ -176,6 +176,7 @@
     </div>
 
     <script>
+        document.getElementById("overbid").checked = true;
         var radios = document.getElementsByClassName("radio");
         for (var i = 0; i < radios.length; i++) {
             radios[i].addEventListener('change', function () {
@@ -196,9 +197,7 @@
             });
         }
 
-        display_full();
-        //display("./overbid_graph.json");
-
+        display("./overbid_graph.json");
     </script>
 </body>
 

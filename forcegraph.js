@@ -11,10 +11,6 @@ function display(input) {
             }
         });
 
-        function get_job(node) {
-            return node.job.concat(node.rank).join(',');
-        }
-
         // preprocess
         let node_indices = {};
         nodes.forEach((node, index) => {
