@@ -123,7 +123,8 @@
     <script src="https://cdn.jsdelivr.net/npm/d3-chord@3"></script>
     <script src="louvain.js"></script>
     <script src="forcegraph.js"></script>
-    <script src="chord.js"></script>
+    <script src="fullgraph.js"></script>
+    <script src="chords.js"></script>
     <script>
         const width = window.innerWidth;
         const height = window.innerHeight;
@@ -163,7 +164,7 @@
 <body>
     <form name="mainForm">
         <div>
-            <input class="radio" type="radio" id="overbid" name="choices" value="overbid" checked />
+            <input class="radio" type="radio" id="overbid" name="choices" value="overbid" />
             <label for="overbid">Enchérisseurs</label>
         </div>
         <div>
@@ -175,8 +176,12 @@
             <label for="witnesses">Témoins</label>
         </div>
         <div>
+            <input class="radio" type="radio" id="full" name="choices" value="full" checked />
+            <label for="full">Graphe complet</label>
+        </div>
+        <div>
             <input class="radio" type="radio" id="chords" name="choices" value="chords" />
-            <label for="chords">Graphe complet</label>
+            <label for="full">Flux d'intérations par catégories</label>
         </div>
     </form>
     <div id="content" width="100%" height="100%">
@@ -184,7 +189,7 @@
     </div>
 
     <script>
-        document.getElementById("overbid").checked = true;
+        document.getElementById("full").checked = true;
         var radios = document.getElementsByClassName("radio");
         for (var i = 0; i < radios.length; i++) {
             radios[i].addEventListener('change', function () {
@@ -198,15 +203,17 @@
                     case "overbid":
                         display("./overbid_graph.json");
                         break;
-                    case "chords":
+                    case "full":
                         display_full();
+                        break;
+                    case "chords":
+                        chords();
                         break;
                 }
             });
         }
 
         display_full();
-        //display("./overbid_graph.json");
     </script>
 </body>
 
